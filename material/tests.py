@@ -5,17 +5,34 @@ from material.models import *
 # Create your tests here.
 class ModelTest(TestCase):
 
+    def test_user_create(self):
+        user=User(username='test', email='test@mail.com', password='testpassword')
+        user.save()
+        self.assertEqual(User.objects.get(username__exact='test'),user)
+
     def test_material_create(self):
         material=Material.new_('Fibra','12')
         material.save()
         self.assertSequenceEqual(Material.objects.all(),[material])
 
-    def test_material_change(self):
+    def test_in_material_create(self):
+        self.test_user_create()
         self.test_material_create()
-        material=Material.objects.all()[0]
-        material.name="Metal"
-        material.save()
-        self.assertEqual(Material.objects.)
+        user=User.objects.get(username__exact='test')
+        material=Material.objects.get(name__exact='Fibra')
+        in_material = InMaterial.new_(user, material)
+        in_material.save()
+        self.assertEqual(InMaterial.objects.get(pk=1), in_material)
+
+    def test_out_material_create(self):
+        self.test_user_create()
+        self.test_material_create()
+        user=User.objects.get(username__exact='test')
+        material=Material.objects.get(name__exact='Fibra')
+        out_material=OutMaterial.new_(user,material)
+        out_material.save()
+        self.assertEqual(OutMaterial.objects.get(pk=1),out_material)
+
 
     def test_material_delete(self):
         self.test_material_create()
@@ -38,18 +55,11 @@ class ModelTest(TestCase):
         material_2.save()
         self.assertEqual(Material.objects.all()[0], material_1)
 
-    def test_in_material_creation(self):
-        user=User(username='test', email='test@mail.com', password='testpassword')
-        material=Material.new_('Fibra','13')
-        user.save()
-        material.save()
-        in_material = InMaterial.new_(user, material)
-        in_material.save()
-        self.assertEqual(InMaterial.objects.all()[0], in_material)
 
-    def test_in_material_desc_ordering(self):
+    #Test Q object queries
+    def test_Q_object_queries(self):
+        self.test_in_material_create()
         
-        pass
 
 
 
