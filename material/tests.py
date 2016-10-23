@@ -55,10 +55,61 @@ class ModelTest(TestCase):
         material_2.save()
         self.assertEqual(Material.objects.all()[0], material_1)
 
+class QuerySetMethodTest(TestCase):
 
-    #Test Q object queries
-    def test_Q_object_queries(self):
-        self.test_in_material_create()
+    def setUp(self):
+
+        self.user=User(username='test', email='test@mail.com', password='testpassword')
+        self.user.save()
+
+        self.material=Material.new_('Fibra','12')
+        self.material.save()
+
+        self.material2=Material.new_('Fibra','24')
+        self.material2.save()
+
+        self.in_material=InMaterial.new_(self.user,self.material)
+        self.in_material.save()
+
+        self.in_material2 = InMaterial.new_(self.user,self.material2)
+        self.in_material2.save()
+
+        self.out_material=OutMaterial.new_(self.user,self.material)
+        self.out_material.save()
+
+        self.out_material2=OutMaterial.new_(self.user,self.material2)
+        self.out_material2.save()
+
+    def test_all(self):
+        self.assertSequenceEqual(User.objects.all(),[self.user])
+        self.assertSequenceEqual(Material.objects.all(),[self.material, self.material2])
+
+        #InMaterial/OutMaterial orderred by create_time desc
+        self.assertSequenceEqual(InMaterial.objects.all(),[self.in_material2,self.in_material])
+        self.assertSequenceEqual(OutMaterial.objects.all(),[self.out_material2,self.out_material])
+
+    def test_filter(self):
+        self.assertSequenceEqual(Material.objects.filter(type_no='24'),[self.material2])
+
+        self.assertSequenceEqual(Material.objects.filter(name__iexact='fibra',type_no='24'), [self.material2]) 
+        self.assertSequenceEqual(InMaterial.objects.filter(material__name__iexact='fibra',material__type_no='24'),[self.in_material2])
+
+        self.assertSequenceEqual(OutMaterial.objects.filter(material__name__iexact='fibra'),[self.out_material2,self.out_material])
+
+    def test_exclude(self):
+
+        self.assertSequenceEqual(Material.objects.exclude(type_no='24'),[self.material])
+
+        self.assertSequenceEqual(Material.objects.exclude(name__iexact='fibra'),[])
+
+        self.assertSequenceEqual(InMaterial.objects.exclude(material__type_no='24'),[self.in_material])
+
+        self.assertSequenceEqual(OutMaterial.objects.exclude(material__name__iexact='fibra'),[])
+
+
+
+
+
         
 
 
