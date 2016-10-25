@@ -165,7 +165,7 @@ class QuerySetMethodTest(TestCase):
 
         self.assertSequenceEqual(
                Material.objects.dates('create_time','day'), 
-               [datetime.date(2016,10,23)]
+               [datetime.date.today()]
                 )
         
     def test_none(self):
@@ -183,6 +183,41 @@ class QuerySetMethodTest(TestCase):
     def test_prefetch_related(self):
         pass
         
+        
+    def test_extra(self):
+        # 提供额外的数据库查询参数。
+        self.assertSequenceEqual(
+                Material.objects.extra(
+                    select={'is_recent':"create_time >'2016-01-01'"},
+                    where=['type_no=%s'],
+                    params=['12'],
+                    order_by=['create_time']
+                    ),
+                [self.material]
+                )
+
+    def test_defer(self):
+#        print Material.objects.defer('price','type_no')
+        pass
+
+    def test_only(self):
+        print Material.objects.only('name','price')
+
+    def test_using(self):
+        # 指定查询所使用的数据库，当我们使用多个数据库时使用。
+        pass
+
+    def test_select_for_update(self):
+        pass
+
+    def test_raw(self):
+        print "==========Test raw\n"
+        for i in Material.objects.raw('select id, name from material'):
+            print i,"\n"
+        
+
+        
+
         
         
         
