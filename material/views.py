@@ -10,9 +10,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from material.models import  Material
 
 # Create your views here.
+# TODO
 def login(request):
     return render(request,'registration/login.html')
 
+#TODO
 def logout(request):
     pass
 
@@ -20,8 +22,8 @@ def logout(request):
 def index(request):
     return HttpResponse("User Logged in")
 
-#LoginRequiredMixin,
-class MaterialListView( ListView):
+# TODO class-based views
+class MaterialListView(LoginRequiredMixin, ListView):
     model=Material
 
 
