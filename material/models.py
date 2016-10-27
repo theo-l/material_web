@@ -27,6 +27,7 @@ class Material(Base):
     class Meta:
         db_table='material'
         ordering=['create_time']
+        get_latest_by='create_time' # this option will affect QuerySet's latest()/earliest()
 
     @staticmethod
     def new_(name, type_no, price=0.0, count=0, unit='za', note=''):

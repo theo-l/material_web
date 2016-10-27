@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+{% comment %}
+    error message
+{% endcomment %}
+{% if form.errors %}
+    <p>Your username and password did not match. Please try again! </p>
+{% endif %}
+
+{% if next %}
+   {% if user.is_authenticated %}
+   {% else %}
+        <p>Please login to see this page.
+   {% endif %} 
+{% endif %}
+
+<form action=" {% url  'login'  %} " method="post" accept-charset="utf-8">
+   {% csrf_token %} 
+   <table>
+    <tr>
+        <td> {{ form.username.label_tag }} </td>
+        <td> {{ form.username }}  </td>
+    </tr>
+    <tr>
+        <td> {{ form.password.label_tag }}   </td>
+        <td> {{ form.password }}   </td>
+    </tr>
+   </table>
+
+   <input type="submit" name="login" id="login" value="Login" />
+   <input type="hidden" name="next" id="next" value="{{ next }}" />
+</form>
+
+<p><a href=" {% url  'password_reset' %} ">Lost password?</a>  </p>
+    
+{% endblock main %}

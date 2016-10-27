@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-  
+# -*- coding: utf-8 -*-
 import datetime
 from django.test import TestCase
 
 from material.models import *
+
 # Create your tests here.
 class ModelTest(TestCase):
 
@@ -201,7 +202,7 @@ class QuerySetMethodTest(TestCase):
         pass
 
     def test_only(self):
-        print Material.objects.only('name','price')
+        print "Test only() method: ", Material.objects.only('name','price')
 
     def test_using(self):
         # 指定查询所使用的数据库，当我们使用多个数据库时使用。
@@ -214,19 +215,109 @@ class QuerySetMethodTest(TestCase):
         print "==========Test raw\n"
         for i in Material.objects.raw('select id, name from material'):
             print i,"\n"
+#        self.assertSequenceEqual(Material.objects.raw('select id, name from material').all(),[self.material, self.material2])
+
+    def test_get(self):
+        self.assertEqual(Material.objects.get(type_no='24'), self.material2)
         
+    def test_get_or_create(self):
+        (new_obj, created)=Material.objects.get_or_create(name='Fibra', type_no='24')
+        self.assertFalse(created)
+        (new_obj,created)=Material.objects.get_or_create(name='Swither', type_no='3',
+                defaults={'price':0} 
+                )
+        self.assertTrue(created)
+
+    def test_update_or_create(self):
+        (new_obj, created)=Material.objects.update_or_create(
+                                name='Fibra',
+                                type_no='24',
+                                defaults={ 'type_no':'25' }
+                            )
+        self.assertFalse(created)
+
+        (new_obj, created)=Material.objects.update_or_create(
+                                name='Fibra',
+                                type_no='26',
+                                defaults={ 
+                                    'type_no':'27',
+                                    'price':0
+                                    }
+                            )
+        self.assertTrue(created)
+
+    def test_bulk_create(self):
+        Material.objects.bulk_create([
+                Material.new_('Shoe','35'), 
+                Material.new_('Shoe','36'), 
+                Material.new_('Shoe','37') 
+                ])
+        self.assertEqual(Material.objects.filter(name='Shoe').count(), 3)
+
+
+    def test_first(self):
+        self.assertEqual(Material.objects.first(),self.material)
+
+    def test_last(self):
+        self.assertEqual(Material.objects.last(), self.material2)
+
+    def test_count(self):
+        self.assertEqual(Material.objects.count(), 2)
+
+    # latest/earliest : 依赖于model的Meta类的 get_latest_by 选项值指定的字段
+    def test_latest(self):
+        self.assertEqual(Material.objects.latest(),self.material2)
+
+    def test_earliest(self):
+        self.assertEqual(Material.objects.earliest(), self.material)
+        
+    def test_delete(self):
+        self.material.delete()
+        self.assertSequenceEqual(Material.objects.all(), [self.material2])
+
+    def test_exists(self):
+        self.assertTrue(Material.objects.filter(type_no='24').exists())
+        self.assertFalse(Material.objects.filter(type_no='25').exists())
+        
+    def test_update(self):
+        # update return the number of records it updated
+        self.assertEqual(Material.objects.filter(type_no='24').update(type_no='25'),1)
+        self.assertEqual(Material.objects.get(type_no='25'), self.material2)
+
+    def test_in_bulk(self):
+        self.assertDictEqual(Material.objects.in_bulk([1]),{1:self.material})
+        self.assertDictEqual(Material.objects.in_bulk(),{1:self.material, 2:self.material2})
+
+    def test_iterator(self):
+        self.assertSequenceEqual(list(Material.objects.iterator()),[self.material, self.material2])
 
         
-
+    def test_annotate(self):
+        # annotate: 为查询出来的结果集中的每个记录添加一个额外的 select 字段，以便之后可以使用。
+        from django.db.models.functions import Upper
+        objs = Material.objects.filter(type_no='24').annotate(name_upper=Upper('name'))
+        self.assertEqual(objs[0].name_upper, objs[0].name.upper())
         
-        
-        
-        
+    def test_aggregate(self):
+        from django.db.models import Count, Avg, Max, Min, StdDev, Sum, Variance
+        agg_user=User(username='agg_test', email='agg_test@mail.com', password='agg_test_password')
+        agg_user.save()
 
+        in_material3=InMaterial.new_(agg_user,self.material, count=2)
+        in_material3.save()
 
+        out_material3=OutMaterial.new_(agg_user, self.material)
+        out_material3.save()
 
-        
+        self.assertEqual(Material.objects.filter(type_no='12').aggregate(Count('ins')),{'ins__count':2})
+        self.assertEqual(InMaterial.objects.filter(material__type_no='12').aggregate(Avg('count')),{'count__avg':1.0})
+        self.assertEqual(InMaterial.objects.filter(material__type_no='12').aggregate(Max('count')), {'count__max':2})
+        self.assertEqual(InMaterial.objects.filter(material__type_no='12').aggregate(Min('count')), {'count__min':0})
 
-
-
+        self.assertEqual(InMaterial.objects.filter(material__type_no='12').aggregate(Sum('count')),{'count__sum':2})
+        # StdDev/Variance 在 Sqlite中不支持。
+#        print InMaterial.objects.filter(material__type_no='12').aggregate(StdDev('count'))
+#        print InMaterial.objects.filter(material__type_no='12').aggregate(Variance('count'))
+#        print Material.objects.aggregate(Count('ins'))
+         
 
