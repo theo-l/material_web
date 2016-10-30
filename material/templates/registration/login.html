@@ -1,32 +1,42 @@
-{% extends "base.html" %}
+{% extends "material/base.html" %}
+
+{% block title %}
+  Login    
+{% endblock title %}
 
 {% block main %}
-
-{% comment %}
-    error message
-{% endcomment %}
-{% if form.errors %}
-    <p>Your username and password did not match. Please try again! </p>
-{% endif %}
-
-{% if next %}
-   {% if user.is_authenticated %}
-   {% else %}
-        <p>Please login to see this page.
-   {% endif %} 
-{% endif %}
 
 <form action=" {% url  'login'  %} " method="post" accept-charset="utf-8">
    {% csrf_token %} 
    <table>
-    <tr>
-        <td> {{ form.username.label_tag }} </td>
-        <td> {{ form.username }}  </td>
-    </tr>
-    <tr>
-        <td> {{ form.password.label_tag }}   </td>
-        <td> {{ form.password }}   </td>
-    </tr>
+       {% comment %}
+        # 渲染表单的方式        
+
+        1. 通过表单实例，手动指定html代码来渲染
+             <tr>
+                 <td> {{ form.username.label_tag }} </td>
+                 <td> {{ form.username }}  </td>
+             </tr>
+             <tr>
+                 <td> {{ form.password.label_tag }}   </td>
+                 <td> {{ form.password }}   </td>
+             </tr>
+
+        2. 使用 表单自身的方法渲染
+            
+            form.as_p()
+            form.as_ul()
+
+            form.as_table() # 默认
+
+       {% endcomment %}
+
+       <!--当使用 表单自身的渲染html方法时， 其中的错误消息会自动显示出来-->
+       {{ form }}
+
+
+
+           
    </table>
 
    <input type="submit" name="login" id="login" value="Login" />

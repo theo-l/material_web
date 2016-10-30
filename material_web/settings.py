@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # django的内容类型系统， 将权限与model关联
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+
+    # 应用消息框架应用
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'material',
@@ -49,12 +51,15 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     # 管理跨请求会话
+    # 消息应用框架依赖中间件
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 
     # 通过会话关联用户与请求
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    # 消息应用框架中间件
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -71,6 +76,8 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+
+                # 模板中的消息上下文处理器
                 'django.contrib.messages.context_processors.messages',
             ],
         },

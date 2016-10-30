@@ -1,0 +1,21 @@
+{% extends "material/base.html" %}
+
+<!-- Title define area -->
+{% block title %}
+	Material Browser
+{% endblock title %}
+
+{% block sidebar %}
+    
+<!-- sidebar menu -->
+	<ul class="nav nav-sidebar">
+	    <li><a href="{% url 'material-index' %}">Overview</a></li>
+	    <li><a href="{% url 'material-add' %}">New</a></li>
+	    <li><a href="">Analyse</a></li>
+	</ul>    
+{% endblock sidebar %}
+
+<!-- main content -->
+{% block main %}
+    
+{% endblock main %}

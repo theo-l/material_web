@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="liang">
+
+{% load static %}
+<link rel="icon" href="{% static 'material/img/bootstrap.ico' %}">
+
+<!--=============== page title =============== -->
+<title>
+    {% block title  %}
+    {% endblock title%}
+</title>
+
+
+<!--  ===============  Bootstrap core CSS  =============== -->
+<link rel="stylesheet" href="{% static 'material/css/bootstrap.min.css' %}"  type="text/css" media="all" />
+
+<!--=============== Project core CSS =============== -->
+<link rel="stylesheet" href="{% static 'material/css/material.css' %}"  type="text/css" media="all" />
+
+
+</head>
+<body>
+
+<!-- Top navigation bar -->
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+
+		<div class="container-fluid">
+
+
+			<div class="navbar-header">
+
+				<!-- this button will be displayed after the page resized to be too small to show all the menu items -->
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>	
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				
+				<!-- this is a principle link on the top navigation bar, default on the left side -->
+				<a class="navbar-brand" href="{% url "index" %}">Material</a>
+
+			</div>
+
+			<!-- navigation bar div class -->
+			<div id="navbar" class="navbar-collapse collapse">
+
+				<!-- navigation bar menu items list -->
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"> <a href="{% url 'index' %}">Home</a> </li>
+					<li><a href="{% url 'material-index' %}">Material</a></li>
+					<li><a href="{% url 'inmaterial-index' %}">InMaterial</a></li>
+					<li><a href="{% url 'outmaterial-index' %}">OutMaterial</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+
+	<!-- page content area -->
+	<div class="container-fluid">
+
+
+		<div class="row">
+
+			<!-- sidebar navigation area -->
+			<div class="col-sm-3 col-md-2 sidebar">
+				{% block sidebar %}
+				    
+				{% endblock sidebar %}
+			</div>
+
+			<!-- main content area  -->
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<div class="row placeholders">
+				    {% block main %}
+				        
+				    {% endblock main %}
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+    
+
+    <!--    =============== Bootstrap core Javascript  ===============  -->
+    <!--    Placed at the end of the document so the pagesload faster -->
+    <script src=" {% static "material/js/jquery-1.12.3.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script src=" {% static "material/js/bootstrap.min.js" %}" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>
