@@ -2,14 +2,63 @@
 
 <!-- title area -->
 {% block title %}
-   Material Management 
+     Material Management 
 {% endblock title %}
+<!-- ================================================== -->
 
 
-<!-- sidebare content area -->
 
 <!-- main page content  -->
 {% block main %}
+
   
-  Material List View  
+  <!-- ==============Material Search Form==================================== -->
+    <form action="{% url 'material-index' %}" method="POST">
+    	{% csrf_token %}
+   	 	<input type="text" name="key" value="{{ key }}">
+   	 	<input type="submit" name="search" value="Search">
+    </form>
+  <!-- ================================================== -->
+
+
+
+  {% include "navigator.html" with object_list=materials %}
+
+  <!-- ==================Material List Table================================ -->
+  <table class="table table-hover">
+    	<thead>
+    	<tr>
+    		<th>Name</th>
+    		<th>Type Number</th>
+    		<th>Price</th>
+    		<th>Count</th>
+    		<th>Unit</th>
+    		<th>Note</th>
+    		<th>Creation</th>
+    		<th>Last Update</th>
+    		<th></th>
+    	</tr>
+    	</thead>
+    	<tbody>
+    	{% for material in materials %}
+    		<tr>
+    				<td><a href="{% url 'material-update' material.id %}">{{ material.name }}</a></td>
+    				<td>{{ material.type_no }}</td>
+    				<td>{{ material.price }}</td>
+    				<td>{{ material.count }}</td>
+    				<td>{{ material.unit }}</td>
+    				<td>{{ material.note }}</td>
+    				<td>{{ material.create_time | date:"Y/m/d" }}</td>
+    				<td>{{ material.last_update_time | date:"Y/m/d" }}</td>
+    				<td><a href="{% url 'material-delete' material.id %}" class="delete">x</a></td>
+    			</tr>	
+    	{% endfor %}	
+
+    	</tbody>
+    </table>
+  <!-- ================================================== -->
+
+  {% include "navigator.html" with object_list=materials %}
+
+
 {% endblock main %}

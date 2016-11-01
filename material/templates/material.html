@@ -10,6 +10,7 @@
 <!-- sidebar menu -->
 	<ul class="nav nav-sidebar">
 	    <li><a href="{% url 'material-index' %}">Overview</a></li>
+	    <li><a href="{% url 'material-import' %}">Import</a></li>
 	    <li><a href="{% url 'material-add' %}">New</a></li>
 	    <li><a href="">Analyse</a></li>
 	</ul>    
@@ -19,3 +20,8 @@
 {% block main %}
     
 {% endblock main %}
+
+{% block js %}
+    
+			$('#material-li').addClass('active')	
+{% endblock js %}

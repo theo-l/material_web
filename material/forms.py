@@ -3,7 +3,10 @@
 "project's form module"
 
 from django import forms
-# from material.models import Material, InMaterial, OutMaterial
+
+from material.models import (
+    Material, InMaterial, OutMaterial
+)
 
 
 class LoginUserForm(forms.Form):
@@ -52,5 +55,24 @@ class LoginUserForm(forms.Form):
             self.add_error('username', "Username can not be a test user")
 
 
+class RegisterUserForm(forms.Form):
+    email = forms.EmailField(max_length=50, strip=True)
+    username = forms.CharField(max_length=20, min_length=5, strip=True, label="User Name")
+    password = forms.CharField(label="Password", max_length=20, strip=True, widget=forms.PasswordInput)
+    repassword = forms.CharField(label="Confirm Password", max_length=20, strip=True, widget=forms.PasswordInput)
 
-            
+
+class MaterialFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()
+
+
+class MaterialForm(forms.ModelForm):
+
+    class Meta:
+        model = Material
+        fields = '__all__'  # exclude=[]
+
+    def clean(self):
+        self._validate_unique = False
+        return self.cleaned_data

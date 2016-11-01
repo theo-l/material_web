@@ -4,6 +4,22 @@
     color:red;
 }
 
+.left {
+  float: left;
+}
+
+.delete{
+  color:red;
+}
+
+.pagination {
+  text-align: right;
+}
+
+table.table-hover th {
+  text-align: center;
+}
+
 /* ================= Dashbord CSS ================= */
 
 /* Move down content because we have a fixed navbar that is 50px tall */

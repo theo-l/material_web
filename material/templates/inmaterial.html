@@ -7,7 +7,7 @@
 <!-- sidebar menu -->
 {% block sidebar %}
     
-	<ul>
+	<ul class="nav nav-sidebar">
 	    <li><a href="">Overview</a></li>
 	    <li><a href="">New</a></li>
 	    <li><a href="">Analyse</a></li>
@@ -18,3 +18,7 @@
 {% block main %}
     
 {% endblock main %}
+
+{% block js %}
+			$('#inmaterial-li').addClass('active')	
+{% endblock js %}

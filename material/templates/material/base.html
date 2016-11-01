@@ -52,10 +52,20 @@
 
 				<!-- navigation bar menu items list -->
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"> <a href="{% url 'index' %}">Home</a> </li>
-					<li><a href="{% url 'material-index' %}">Material</a></li>
-					<li><a href="{% url 'inmaterial-index' %}">InMaterial</a></li>
-					<li><a href="{% url 'outmaterial-index' %}">OutMaterial</a></li>
+					<li id='home-li'> <a href="{% url 'index' %}">Home</a> </li>
+
+					{% if not user or not user.is_authenticated %}
+					    
+					<li id='home-li'> <a href="{% url 'login'  %}">Login</a> </li>
+					
+					{% endif %}
+
+					{% if user and user.is_authenticated %}
+					<li id='material-li'><a href="{% url 'material-index' %}">Material</a></li>
+					<li id='inmaterial-li'><a href="{% url 'inmaterial-index' %}">InMaterial</a></li>
+					<li id='outmaterial-li'><a href="{% url 'outmaterial-index' %}">OutMaterial</a></li>
+					<li><a href="{% url 'logout' %}">Logout</a></li>					    
+					{% endif %}
 				</ul>
 			</div>
 		</div>
@@ -78,6 +88,10 @@
 			<!-- main content area  -->
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="row placeholders">
+				
+				  <!-- ================================================== -->
+				  {% include "messages.html" %}
+				  <!-- ================================================== -->
 				    {% block main %}
 				        
 				    {% endblock main %}
@@ -94,6 +108,14 @@
     <!--    Placed at the end of the document so the pagesload faster -->
     <script src=" {% static "material/js/jquery-1.12.3.js" %}" type="text/javascript" charset="utf-8"></script>
     <script src=" {% static "material/js/bootstrap.min.js" %}" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			{% block js %}
+			    
+			{% endblock js %}
+		});
+	</script>
 
 </body>
 </html>

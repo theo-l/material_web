@@ -1,0 +1,142 @@
+# encoding:utf-8
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+# æééªè¯ç¸å³æºå¶
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import views as auth_views
+from django.contrib.auth import authenticate
+
+from material.models import Material, InMaterial, OutMaterial
+from material.forms import LoginUserForm
+
+# Create your views here.
+# TODO
+
+
+def login(request):
+    'login view'
+
+    # é»è®¤çç¨æ·å¯¹è±¡ä¸º  å¿åç¨æ·
+    user = request.user
+
+    if request.method == 'POST':
+        next_url = request.POST['next']
+        # ä»è¯·æ±å¯¹è±¡ request æ¥åå»ºè¡¨åå¯¹è±¡
+        form = LoginUserForm(request.POST)
+
+        # éªè¯è¡¨åæ°æ®
+        if form.is_valid():
+
+            # è®¿é®è¡¨åå¯¹è±¡æ¶ï¼éè¿ Form.cleaned_data å­å¸å¯¹è±¡è®¿é®
+            user = authenticate(
+                username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+
+            if user is not None:
+                auth_views.login(request, user)
+                return redirect(next_url)
+            else:
+
+                # ä¸ºè¡¨åå¯¹è±¡æ·»å ä¸ä¸ªéå­æ®µéè¯¯æ¶æ¯ï¼ä»¥ä¾¿æ¾ç¤ºç»ç¨æ·å¶æä½çç»æ
+                #                form.add_error(None, 'username and password are not compatible!')
+                form.add_error(None, 'ç¨æ·ååå¯ç ä¸å¹é!')
+    else:
+
+        # åå»ºè¡¨åå®ä¾æ¶ä½¿ç¨çåå§åæ°æ®
+        form_initial_data = {
+            'username': 'ç¨æ·å'
+        }
+        form = LoginUserForm(initial=form_initial_data)
+
+        # éè¿ Form.fields å±æ§å¯ä»¥è®¿é®Formä¸­çæ¯ä¸ªå­æ®µå®ä¾
+        form.fields['username'].label = 'Username'
+        next_url = request.GET['next']
+
+    return render(request, 'registration/login.html', {'form': form, 'next': next_url, 'user': user})
+
+# TODO
+
+ 
+def logout(request):
+    'logout view method'
+    return auth_views.logout(request)
+
+
+
+def password_reset(request):
+    'password reset view method'
+    return HttpResponse('Reset Password! Enter your email')
+
+
+@login_required
+def index(request):
+    'index view'
+    return render(request, 'material/index.html')
+
+# TODO
+ 
+ 
+class MaterialListView(LoginRequiredMixin, ListView):
+
+#    model = Material # ç¨æ¥è¡¨ç¤ºè¯¥è§å¾ç±»ç®¡ççmodelç±»
+#    queryset=Material.objects.order_by('-create_time') #è¯¥è¯0­å¥å£°æä¸model=Modelä½ç¨ç¸åï¼ä½å·ææ´å¤çµæ´»æ§
+
+    context_object_name='materials'#ç¨æ¥å¨æ¨¡æ¿ä¸­è¡¨ç¤ºå¯¹è±¡åè¡¨çåéåç§°ï¼é»è®¤ä¸º  object_list
+
+    template_name = 'material/material/material_list.html' #æå®è¯¥è§å¾æä½¿ç¨çæ¨¡æ¿æä»¶
+
+    def get(self, request):
+        print "material list view"
+        return render(request, self.template_name)
+
+
+    # è¯¥å½æ°ä¸ model/queryset å±æ§å·æç¸åçåè½ï¼ä½æ¯æ´å çµæ´»
+    def get_queryset():
+
+        #å¯ä»¥å¨æ­¤å®å¶è§å¾ä¸­çå¯¹è±¡è¿æ»¤åè¡¨
+        return Material.objects.order_by('-create_time')
+
+
+
+class MaterialDetailView(LoginRequiredMixin, DetailView):
+ 
+    model=Material #queryset = Material.objects.all() è¯¥ä¸¤ä¸ªè¯­å¥å·æç¸åçææ
+    context_object_name = 'material'
+
+    def get_context_data(self,**kwargs):
+        'å®å¶é¢å¤çé»è¾æ¥æ·»å æ¨¡æ¿ä¸­ä½¿ç¨çé¢å¤æ°æ®å¯¹è±¡'
+        context=super(MaterialDetailView,self).get_context_data(**kwargs)
+        # å¯ä»¥ä¸ºcontextæ·»å é¢å¤çæ°æ®å¯¹è±¡ï¼ä»¥ä¾¿å¨æ¨¡æ¿ä¸­è¿è¡è®¿é®
+        return context
+
+
+class MaterialCreateView(LoginRequiredMixin, CreateView):
+    model = Material
+    fields = ['name', 'type_no', 'price', 'count', 'unit', 'note']
+    template_name = 'material/material/material_form.html'
+
+
+class MaterialUpdateView(LoginRequiredMixin, UpdateView):
+    model = Material
+
+
+class MaterialDeleteView(LoginRequiredMixin, DeleteView):
+    model = Material
+
+
+# TODO
+
+
+class InMaterialListView(LoginRequiredMixin, ListView):
+
+    model = InMaterial
+    template_name = 'inmaterial/inmaterial_list.html'
+
+# TODO
+
+
+class OutMaterialListView(LoginRequiredMixin, ListView):
+    model = OutMaterial
+    template_name = 'outmaterial/outmaterial_list.html'

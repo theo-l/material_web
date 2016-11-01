@@ -1,0 +1,19 @@
+{% extends "material/base.html" %}
+
+{% block title %}
+   User Registration 
+{% endblock title %}
+
+{% block main %}
+   <form action="{% url "register" %}" method="POST">
+   	{% csrf_token %}
+   	<table>
+   		{{ form }}
+   	</table>
+
+   	<br>
+   	<button type="submit" class="btn btn-primary">Register</button>
+   </form> 
+
+   <a href="/login/?next=/">Login</a>
+{% endblock main %}
