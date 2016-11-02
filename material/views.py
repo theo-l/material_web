@@ -20,67 +20,82 @@ from django.contrib import messages
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+# model-related libs
 from material.models import Material, InMaterial, OutMaterial
+
+#form related libs
 from material.forms import (
-    LoginUserForm, MaterialForm, MaterialFileForm, RegisterUserForm
-)
+        LoginUserForm, MaterialForm, MaterialFileForm, RegisterUserForm
+    )
+
+#helper-related libs
 from material import utils
 
+############################################################
 # Create your views here.
-# TODO
-
+############################################################
 
 def login(request):
-    'login view'
+    # 登录视图
 
+    # 未登录时 为匿名用户对象
     user = request.user
 
     if request.method == 'POST':
-        print request.POST['next']
-        next_url = request.POST['next'] if 'next' in request.POST else '/'
-        form = LoginUserForm(request.POST)
 
+        # 定义登录后跳转重定向 URL
+        next_url = request.POST['next'] if 'next' in request.POST else '/'
+
+        # 根据请求对象来构建 数据绑定之后的表单对象
+        form = LoginUserForm(request.POST)
+        
+        #验证表单数据，会调用 errors()方法，errors()会调用full_clean():依次又调用_clean_fields(),_clean_form(),_post_clean()
         if form.is_valid():
 
+            # 使用django提供的 auth 应用来验证登录用户
             user = authenticate(
-                username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+                        username=form.cleaned_data['username'], 
+                        password=form.cleaned_data['password']
+                    )
 
             if user is not None:
+                # 使用 auth 应用来登录用户，该方法会将登录的用户绑定到session/cookie中
                 auth_views.login(request, user)
+                # 登录成功后重定向
                 return redirect(next_url)
             else:
-
+                # 当验证用户失败之后，在登录页面表单中写入错误消息
                 form.add_error(None, '用户名与密码不匹配!')
     else:
-
+        # 表单初始化填充数据
         form_initial_data = {
             'username': '用户名'
         }
+        # 构建数据未绑定的表单对象
         form = LoginUserForm(initial=form_initial_data)
 
+        # 访问表单对象的字段并修改其选项值
         form.fields['username'].label = 'Username'
         next_url = request.GET['next'] if 'next' in request.GET else "/"
 
+    # 通过模板以及上下文数据对象来渲染请求页面给用户
     return render(request, 'registration/login.html', {'form': form, 'next': next_url, 'user': user})
 
-# TODO
 
 
 def register(request):
+    # 用户注册视图
 
     if request.method == "POST":
+
         form = RegisterUserForm(request.POST)
+        # 表单数据验证
         if form.is_valid():
-            if User.objects.filter(username=form.cleaned_data['username']).exists():
-                form.add_error('username', "Username already exists!")
-            elif form.cleaned_data['password'] != form.cleaned_data['repassword']:
-                # messages.add_message(request, messages.WARNING, "Two passwords are not compatible!")
-                form.add_error('repassword', 'Two passwords are not compatible!')
-            else:
-                user = User.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password'], email=form.cleaned_data['email'])
-                user.save()
-                messages.add_message(request, messages.SUCCESS, "Register succeed")
-                return redirect(reverse('index'))
+            user = User.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password'], email=form.cleaned_data['email'])
+            user.save()
+            # 使用消息框架来显示用户操作结果信息
+            messages.add_message(request, messages.SUCCESS, "Register succeed")
+            return redirect(reverse('index'))
     else:
         form = RegisterUserForm()
 
@@ -89,7 +104,9 @@ def register(request):
 
 @login_required
 def logout(request):
-    'logout view method'
+    # 用户登出视图
+
+    #使用 auth 应用提供的logout 方法来注销用户对象
     auth_views.logout(request)
     return redirect(reverse('index'))
 
@@ -98,8 +115,12 @@ def password_reset(request):
     'password reset view method'
     return HttpResponse('Reset Password! Enter your email')
 
+############################################################
+# 错误视图处理，需要设置 DEBUG=False 生效
+############################################################
 
 def page_not_found(request):
+    # 处理页面未找到的404错误
     return render(request, 'material/404.html')
 
 
@@ -115,8 +136,10 @@ def index(request):
 
 @login_required
 def material_add(request):
+    #新建材料对象
 
     if request.method == 'POST':
+        #使用ModelForm来处理
         form = MaterialForm(request.POST)
 
         if form.is_valid():
@@ -271,7 +294,6 @@ class MaterialDeleteView(LoginRequiredMixin, DeleteView):
     model = Material
 
 
-# TODO
 
 
 class InMaterialListView(LoginRequiredMixin, ListView):

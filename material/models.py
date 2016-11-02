@@ -29,11 +29,11 @@ class Material(Base):
     note = models.CharField(max_length=100, blank=True, verbose_name='备注')
 
     class Meta:
-        db_table = 'material'
-        ordering = ['create_time']
-        # this option will affect QuerySet's latest()/earliest()
-        get_latest_by = 'create_time'
-        unique_together = ('name', 'type_no')
+        #Model的meta选项设置
+        db_table = 'material' # 自定义model的表名
+        ordering = ['create_time'] #自定义model对象的检索结果排序
+        get_latest_by = 'create_time' # this option will affect QuerySet's latest()/earliest()
+        unique_together = ('name', 'type_no') #自定义model对象的唯一性键值
 
     @staticmethod
     def new_(name, type_no, price=0.0, count=0, unit='za', note=''):
@@ -42,18 +42,17 @@ class Material(Base):
     def __str__(self):
         return "%s - %s" % (self.name, self.type_no)
 
-    # Override save method to ignore duplicated material object insertion
+    #重载model的save()方法来进行一些定制的验证
     def save(self, *args, **kwargs):
 
         if self.pk is None and self._object_exists():
-            print "material already exists"
+            print "该材料已经存在数据库中"
             return 
 
         super(Material, self).save(*args, **kwargs)
 
-        
-
     def _object_exists(self):
+        #用来对材料对象的唯一性进行验证
         print "name:%s, type_no: %s" %(self.name, self.type_no)
         return Material.objects.filter(name=self.name, type_no=self.type_no).exists()
 
