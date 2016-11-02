@@ -201,8 +201,10 @@ def material_list(request):
     if key is None:
         key = ""
 
+    # 使用分页对象对对象列表进行分页控制处理
     paginator = Paginator(material_list, 20)
 
+    # 获取GET的查询值
     page = request.GET.get('page')
     try:
         materials = paginator.page(page)
@@ -217,64 +219,15 @@ def material_list(request):
 @login_required
 def material_delete(request, pk=None):
 
-    print "Deleting pk=%s" % pk
     material = get_object_or_404(Material, pk=pk)
+    material_name=material.name
     material.delete()
+    messages.add_message(request, messages.INFO,'材料:%s删除成功'%material_name)
     return redirect(reverse('material-index'))
 
 
-@login_required
-def material_detail(request, pk=None):
-    print "Detaling pk=%s" % pk
-    material = get_object_or_404(Material, pk=pk)
 
-    form = MaterialForm(instance=material)
-
-    return render(request, 'material/material/material_detail.html', {'form': form, 'material': material})
-
-
-class MaterialListView(LoginRequiredMixin, ListView):
-
-    #    model = Material
-    #    queryset=Material.objects.order_by('-create_time')
-
-    context_object_name = 'materials'
-
-    template_name = 'material/material/material_list.html'
-
-    def get(self, request):
-        print "material list view"
-        return render(request, self.template_name)
-
-    # 动态过滤模板中的对象列表数据
-    def get_queryset(self):
-
-        return Material.objects.order_by('-create_time')
-
-
-class MaterialDetailView(LoginRequiredMixin, DetailView):
-
-    model = Material  # queryset = Material.objects.all()
-    context_object_name = 'material'
-
-    # 为模板中添加额外的对象
-    def get_context_data(self, **kwargs):
-        context = super(MaterialDetailView, self).get_context_data(**kwargs)
-        return context
-
-    # 为获取到的对象执行额外的操作
-    def get_object(self, *args, **kwargs):
-        obj = super(MaterialDetailView, self).get_object(*args, **kwargs)
-        # 可以对object 执行额外的操作
-        return obj
-
-
-class MaterialCreateView(LoginRequiredMixin, CreateView):
-    model = Material
-    fields = ['name', 'type_no', 'price', 'count', 'unit', 'note']
-    template_name = 'material/material/material_form.html'
-
-
+#使用基于类的更新视图更好控制一些
 class MaterialUpdateView(LoginRequiredMixin, UpdateView):
     model = Material
     context_object_name = 'material'
@@ -290,12 +243,13 @@ class MaterialUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('material-detail', args=[self.object.id])
 
 
-class MaterialDeleteView(LoginRequiredMixin, DeleteView):
-    model = Material
 
 
 
-
+############################################################
+# 材料入库相关视图，将会采用基于类的视图来处理各个操作
+# TODO 使用view-function 来实现一个更新视图
+############################################################
 class InMaterialListView(LoginRequiredMixin, ListView):
 
     model = InMaterial
@@ -305,9 +259,12 @@ class InMaterialListView(LoginRequiredMixin, ListView):
         print "InMaterial get request"
         return super(InMaterialListView, self).get(request, *args, **kwargs)
 
-# TODO
 
 
+############################################################
+# 材料出库相关视图，将会采用基于类的视图来处理各个操作
+############################################################
 class OutMaterialListView(LoginRequiredMixin, ListView):
     model = OutMaterial
     template_name = 'material/outmaterial/outmaterial_list.html'
+

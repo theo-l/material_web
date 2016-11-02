@@ -26,9 +26,6 @@ urlpatterns = [
     url(r'^material/delete/(?P<pk>[0-9]+)/$',
         views.material_delete, name='material-delete'),
 
-    url(r'^material/(?P<pk>[0-9]+)/$',
-        views.material_detail, name='material-detail'),
-
     # InMaterial url configs
     url(r'^inmaterial/$', views.InMaterialListView.as_view(),
         name='inmaterial-index'),
