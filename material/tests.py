@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+"""
+File: tests.py
+Author: yourname
+Email: yourname@email.com
+Github: https://github.com/yourname
+Description: 应用测试文件
+"""
+
 import datetime
 from django.test import TestCase
 

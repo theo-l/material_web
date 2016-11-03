@@ -4,6 +4,7 @@
   Login    
 {% endblock title %}
 
+
 {% block main %}
 
 <form action=" {% url  'login'  %} " method="post" accept-charset="utf-8">
@@ -53,3 +54,7 @@
 <a class="left" href=" {% url  'password_reset' %} ">Lost password?</a>  
     
 {% endblock main %}
+
+{% block js %}
+    $('#login-li').addClass('active')
+{% endblock js %}

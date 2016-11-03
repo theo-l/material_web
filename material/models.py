@@ -40,6 +40,9 @@ class Material(Base):
         return Material(name=name, type_no=type_no, price=price, count=count, unit=unit, note=note)
 
     def __str__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
         return "%s - %s" % (self.name, self.type_no)
 
     #重载model的save()方法来进行一些定制的验证
@@ -59,9 +62,9 @@ class Material(Base):
 
 class InMaterial(Base):
 
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    count = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="用户名")
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, verbose_name="入库材料")
+    count = models.IntegerField(default=0, verbose_name="入库数量")
 
     class Meta:
         db_table = 'in_material'
@@ -73,15 +76,18 @@ class InMaterial(Base):
         return InMaterial(user=user, material=material, count=count)
 
     def __str__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
         return self.user.username + " - "+self.material.name
 
 
 class OutMaterial(Base):
 
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    count = models.IntegerField(default=1)
-    usage = models.CharField(max_length=100, blank=True)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="用户名")
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, verbose_name="出库材料")
+    count = models.IntegerField(default=1, verbose_name="出库数量")
+    usage = models.CharField(max_length=100, blank=True, verbose_name="领料用途")
 
     class Meta:
         db_table = 'out_material'
@@ -93,4 +99,11 @@ class OutMaterial(Base):
         return OutMaterial(user=user, material=material, count=count, usage=usage)
 
     def __str__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
         return self.user.username + " - "+self.material.name
+
+
+
+

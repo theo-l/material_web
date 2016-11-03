@@ -15,6 +15,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
+
 # message-related libs
 from django.contrib import messages
 
@@ -267,4 +268,5 @@ class InMaterialListView(LoginRequiredMixin, ListView):
 class OutMaterialListView(LoginRequiredMixin, ListView):
     model = OutMaterial
     template_name = 'material/outmaterial/outmaterial_list.html'
+
 
