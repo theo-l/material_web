@@ -1,0 +1,13 @@
+{% extends "material/inmaterial.html" %}
+
+{% block title %}
+   {% if action_label == "Create" %}
+       Create InMaterial 
+   {% else %}
+   		Update InMaterial: {{ inmaterial.material }}        
+   {% endif %} 
+{% endblock title %}
+
+{% block main %}
+   {% include "material/update_form.html" %} 
+{% endblock main %}

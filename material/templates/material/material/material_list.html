@@ -1,4 +1,4 @@
-{% extends "material.html" %}
+{% extends "material/material.html" %}
 
 <!-- title area -->
 {% block title %}
@@ -22,7 +22,7 @@
 
 
 
-  {% include "navigator.html" with object_list=materials %}
+  {% include "material/navigator.html" with object_list=materials %}
 
   <!-- ==================Material List Table================================ -->
   <table class="table table-hover">
@@ -58,7 +58,7 @@
     </table>
   <!-- ================================================== -->
 
-  {% include "navigator.html" with object_list=materials %}
+  {% include "material/navigator.html" with object_list=materials %}
 
 
 {% endblock main %}

@@ -1,9 +1,40 @@
-{% extends "inmaterial.html" %}
+{% extends "material/inmaterial.html" %}
 
 {% block title %}
-   In Material Management 
+   In Material Overview
 {% endblock title %}
 
 {% block main %}
-   Inmaterial data view 
+
+{% include "material/navigator.html" with object_list=inmaterials %}
+
+<!-- =================== InMaterial List Table ========== --> 
+<table class="table table-hover">
+   <thead>
+       <tr>
+            <th>Material</th> 
+            <th>Username</th> 
+            <th>Count</th> 
+            <th>InTime</th> 
+            <td></td> 
+       </tr>
+   </thead> 
+   <tbody>
+       {% for inmaterial in inmaterials  %}
+        <tr>
+            <td>
+              <a href="{% url "material-update" inmaterial.material.id %}">{{ inmaterial.material }}</a>
+            </td> 
+            <td>{{ inmaterial.user }}</td>
+            <td>{{ inmaterial.count }}</td> 
+            <td>{{ inmaterial.create_time | date:"Y/m/d" }}</td> 
+            <td>
+            <a href="{% url "inmaterial-delete" inmaterial.id %}" class="delete">x</a> 
+            </td> 
+        </tr>
+       {% endfor %}
+   </tbody>
+</table>
+<!-- ================================================== -->
+{% include "material/navigator.html" with object_list=inmaterials %}
 {% endblock main %}

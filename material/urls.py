@@ -17,20 +17,19 @@ urlpatterns = [
     # Material urls configs
     url(r'^material/$', views.material_list, name='material-index'),
     url(r'^material/import/$', views.material_import, name='material-import'),
-
     url(r'^material/add/$', views.material_add, name='material-add'),
-
-    url(r'^material/update/(?P<pk>[0-9]+)/$',
-        views.MaterialUpdateView.as_view(), name='material-update'),
-
-    url(r'^material/delete/(?P<pk>[0-9]+)/$',
-        views.material_delete, name='material-delete'),
+    url(r'^material/update/(?P<pk>[0-9]+)/$', views.MaterialUpdateView.as_view(), name='material-update'),
+    url(r'^material/delete/(?P<pk>[0-9]+)/$', views.material_delete, name='material-delete'),
 
     # InMaterial url configs
-    url(r'^inmaterial/$', views.InMaterialListView.as_view(),
-        name='inmaterial-index'),
+    url(r'^inmaterial/$', views.InMaterialListView.as_view(), name='inmaterial-index'),
+    url(r'^inmaterial/add/$', views.InMaterialCreateView.as_view(), name='inmaterial-add'),
+    url(r'^inmaterial/update/(?P<pk>[0-9]+)/$', views.InMaterialUpdateView.as_view(), name="inmaterial-update"),
+    url(r'^inmaterial/delete/(?P<pk>[0-9]+)/$', views.inmaterial_delete, name='inmaterial-delete'),
 
     # OutMaterial url configs
-    url(r'^outmaterial/$', views.OutMaterialListView.as_view(),
-        name='outmaterial-index'),
+    url(r'^outmaterial/$', views.OutMaterialListView.as_view(), name='outmaterial-index'),
+    url(r'^outmaterial/add/$', views.OutMatertialCreateView.as_view(), name="outmaterial-add"),
+    url(r'^outmaterial/update/(?P<pk>\d+)/$', views.OutMaterialUpdateView.as_view(), name="outmaterial-update"),
+    url(r'^outmaterial/delete/(?P<pk>\d+)/$', views.outmaterial_delete, name="outmaterial-delete"),
 ]

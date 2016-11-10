@@ -1,9 +1,44 @@
-{% extends "outmaterial.html" %}
+{% extends "material/outmaterial.html" %}
 
 {% block title %}
-  Out Material Management  
+  Out Material  Overview
 {% endblock title %}
 
 {% block main %}
-   Out Material Data View 
+	{% include "material/navigator.html" with object_list=outmaterials %}
+	
+	<!-- ==================== OutMaterial List Table ================ -->
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Material</th>
+					<th>Username</th>
+					<th>Count</th>
+					<th>Usage</th>
+					<th>OutTime</th>
+					<th></th>
+				</tr>
+			</thead>	
+
+			<tbody>
+				
+				{% for outmaterial in outmaterials %}
+					<tr>
+						<td>
+							<a href="{% url "material-update" outmaterial.material.id %}">{{ outmaterial.material }}</a>
+						</td>
+						<td>{{ outmaterial.user }}</td>
+						<td>{{ outmaterial.count }}</td>
+						<td>{{ outmaterial.usage }}</td>
+						<td>{{ outmaterial.create_time | date:"Y/m/d" }}</td>
+						<td>
+							<a href="{% url "outmaterial-delete" outmaterial.id %}" class="delete">x</a>
+						</td> 
+					</tr>
+				{% endfor %}
+			</tbody>
+
+		</table>
+	<!-- =============================================================== -->
+	{% include "material/navigator.html" with object_list=outmaterials %}
 {% endblock main %}

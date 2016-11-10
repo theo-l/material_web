@@ -64,7 +64,7 @@ class InMaterial(Base):
 
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="用户名")
     material = models.ForeignKey(Material, on_delete=models.CASCADE, verbose_name="入库材料")
-    count = models.IntegerField(default=0, verbose_name="入库数量")
+    count = models.PositiveIntegerField(default=1, verbose_name="入库数量")
 
     class Meta:
         db_table = 'in_material'
@@ -86,7 +86,7 @@ class OutMaterial(Base):
 
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="用户名")
     material = models.ForeignKey(Material, on_delete=models.CASCADE, verbose_name="出库材料")
-    count = models.IntegerField(default=1, verbose_name="出库数量")
+    count = models.PositiveIntegerField(default=1, verbose_name="出库数量")
     usage = models.CharField(max_length=100, blank=True, verbose_name="领料用途")
 
     class Meta:

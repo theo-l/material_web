@@ -1,0 +1,13 @@
+<form action="{{ action_url }}" method="POST">
+	{% csrf_token %}	
+	<table>
+		{{ form }}
+	</table>
+	<br>
+	<button type="submit" class="btn btn-primary left">{{ action_label }}</button>
+
+	{% if action_label == "Create" %}
+		{{ action_label }}
+	   <input type="reset" name="reset" class="btn btn-primary left"> 
+	{% endif %}
+</form>

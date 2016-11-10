@@ -3,6 +3,8 @@
 from material.models import Material
 
 
+
+
 def material_file_process(fd):
     import re
 
@@ -42,3 +44,20 @@ def parse_material_title_index(fields):
 def process_material_file_line(fields, name_index, type_index):
     material = Material.new_(fields[name_index], fields[type_index])
     material.save()
+
+class ProcessFormMixin(object):
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            self.pre_form_valid()
+            return self.form_valid(form)
+        else:
+            self.pre_form_invalid()
+            return self.form_invalid(form)
+
+    def pre_form_valid(self):
+        pass
+
+    def pre_form_invalid(self):
+        pass
