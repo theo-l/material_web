@@ -324,3 +324,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
+
+"""
+Email 相关设置
+"""
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_FILE_PATH=None
+EMAIL_PORT=25
+EMAIL_HOST='localhost'
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
+EMAIL_SUBJECT_PREFIX='[Django]'
+EMAIL_USE_TLS=False
+EMAIL_USE_SSL=False
+EMAIL_SSL_CERTFILE=None
+EMAIL_SSL_KEYFILE=None
+EMAIL_TIMEOUT=None
