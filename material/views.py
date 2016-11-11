@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 # views-related libs
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 
 # authenticate-related libs
 from django.contrib.auth.decorators import login_required
@@ -226,7 +226,7 @@ def material_list(request):
     except EmptyPage:
         materials = paginator.page(paginator.num_pages)
 
-    return render(request, 'material/material/material_list.html', {'materials': materials, 'key': key})
+    return render(request, 'material/material/material_list.html', {'materials': materials, 'key': key,'page_obj':materials,'paginator':paginator})
 
 
 @login_required
@@ -271,9 +271,6 @@ class InMaterialListView(LoginRequiredMixin, ListView):
     paginate_by = 20
     template_name = 'material/inmaterial/inmaterial_list.html'
 
-    def get(self, request, *args, **kwargs):
-        print "InMaterial get request"
-        return super(InMaterialListView, self).get(request, *args, **kwargs)
 
 
 class InMaterialCreateView(LoginRequiredMixin, utils.ProcessFormMixin, CreateView):
@@ -336,6 +333,7 @@ class OutMaterialListView(LoginRequiredMixin, ListView):
     model = OutMaterial
     context_object_name = "outmaterials"
     template_name = 'material/outmaterial/outmaterial_list.html'
+    paginate_by = 20
 
 
 class OutMatertialCreateView(LoginRequiredMixin, utils.ProcessFormMixin, CreateView):
@@ -392,3 +390,8 @@ def outmaterial_delete(request, pk=None):
     messages.add_message(request, messages.SUCCESS, u"OutMaterial: %s delete succeed" % material_name)
 
     return redirect(reverse("outmaterial-index"))
+
+
+#测试FormView 不指定 form_class 属性值
+#class TestView(FormView):
+#    template_name="material/index.html"

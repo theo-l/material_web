@@ -32,4 +32,8 @@ urlpatterns = [
     url(r'^outmaterial/add/$', views.OutMatertialCreateView.as_view(), name="outmaterial-add"),
     url(r'^outmaterial/update/(?P<pk>\d+)/$', views.OutMaterialUpdateView.as_view(), name="outmaterial-update"),
     url(r'^outmaterial/delete/(?P<pk>\d+)/$', views.outmaterial_delete, name="outmaterial-delete"),
+
+    # Test FormView 
+#    url(r'^test/$', views.TestView.as_view(), name="test-view"),
 ]
+

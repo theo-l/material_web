@@ -16,14 +16,11 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-
 #from django.contrib.auth import views as auth_views
+from material.views import index, login, password_reset
 
 urlpatterns = [
+#    url(r'^', include('django.contrib.auth.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('material.urls')),
+    url(r'', include('material.urls')),
 ]
-
-# Error handling views
-#************Need to set DEBUG=True to see the standard error handler page
-handler404 = 'material.views.page_not_found'
