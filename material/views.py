@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 # views-related libs
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import ListView, CreateView, UpdateView
 
 # authenticate-related libs
 from django.contrib.auth.decorators import login_required
@@ -17,7 +17,6 @@ from django.contrib.auth.models import User
 
 # logging-related libs
 import logging
-
 
 # message-related libs
 from django.contrib import messages
@@ -38,7 +37,7 @@ from material.forms import (
 from material import utils
 from material import constants
 
-logger=logging.getLogger('material.views')
+logger = logging.getLogger('material.views')
 
 ############################################################
 # Create your views here.
@@ -59,7 +58,8 @@ def login(request):
         # 根据请求对象来构建 数据绑定之后的表单对象
         form = LoginUserForm(request.POST)
 
-        # 验证表单数据，会调用 errors()方法，errors()会调用full_clean():依次又调用_clean_fields(),_clean_form(),_post_clean()
+        # 验证表单数据，会调用
+        # errors()方法，errors()会调用full_clean():依次又调用_clean_fields(),_clean_form(),_post_clean()
         if form.is_valid():
 
             # 使用django提供的 auth 应用来验证登录用户
@@ -94,13 +94,13 @@ def login(request):
 
 def register(request):
     # 用户注册视图
-
     if request.method == "POST":
 
         form = RegisterUserForm(request.POST)
         # 表单数据验证
         if form.is_valid():
-            user = User.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password'], email=form.cleaned_data['email'])
+            user = User.objects.create_user(username=form.cleaned_data[
+                                            'username'], password=form.cleaned_data['password'], email=form.cleaned_data['email'])
             user.save()
             # 使用消息框架来显示用户操作结果信息
             messages.add_message(request, messages.SUCCESS, "Register succeed")
@@ -156,11 +156,13 @@ def material_add(request):
             material = form.save()
 
             if material.id is not None:
-                messages.add_message(request, messages.INFO, "Material create success")
+                messages.add_message(
+                    request, messages.INFO, "Material create success")
                 return redirect(reverse('material-', args=[material.id]))
 
             else:
-                messages.add_message(request, messages.WARNING, "Material already exists in database")
+                messages.add_message(
+                    request, messages.WARNING, "Material already exists in database")
     else:
         form = MaterialForm()
 
@@ -184,7 +186,8 @@ def material_import(request):
             utils.material_file_process(import_file)
 
             # message in views
-            messages.add_message(request, messages.SUCCESS, "File Imported Success")
+            messages.add_message(
+                request, messages.SUCCESS, "File Imported Success")
 
             # process uploaded file objects
             return redirect(reverse('material-index'))
@@ -226,7 +229,7 @@ def material_list(request):
     except EmptyPage:
         materials = paginator.page(paginator.num_pages)
 
-    return render(request, 'material/material/material_list.html', {'materials': materials, 'key': key,'page_obj':materials,'paginator':paginator})
+    return render(request, 'material/material/material_list.html', {'materials': materials, 'key': key, 'page_obj': materials, 'paginator': paginator})
 
 
 @login_required
@@ -247,12 +250,14 @@ class MaterialUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'material/material/material_form.html'
 
     def post(self, request, *args, **kwargs):
-        messages.add_message(request, messages.SUCCESS, "Material Update Succeed!")
+        messages.add_message(
+            request, messages.SUCCESS, "Material Update Succeed!")
         return super(MaterialUpdateView, self).post(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(MaterialUpdateView, self).get_context_data(**kwargs)
-        context['action_url'] = reverse('material-update', args=[self.object.id])
+        context['action_url'] = reverse(
+            'material-update', args=[self.object.id])
         context['action_label'] = constants.UPDATE_ACTION
         return context
 
@@ -272,7 +277,6 @@ class InMaterialListView(LoginRequiredMixin, ListView):
     template_name = 'material/inmaterial/inmaterial_list.html'
 
 
-
 class InMaterialCreateView(LoginRequiredMixin, utils.ProcessFormMixin, CreateView):
     model = InMaterial
     context_object_name = "inmaterial"
@@ -290,12 +294,14 @@ class InMaterialCreateView(LoginRequiredMixin, utils.ProcessFormMixin, CreateVie
         return reverse("inmaterial-index")
 
     def pre_form_valid(self):
-        messages.add_message(self.request, messages.SUCCESS, "InMaterial Create Succeed")
+        messages.add_message(
+            self.request, messages.SUCCESS, "InMaterial Create Succeed")
 
     def pre_form_invalid(self):
-        messages.add_message(self.request, messages.WARNING, "InMaterial Create Failed")
+        messages.add_message(
+            self.request, messages.WARNING, "InMaterial Create Failed")
 
-    
+
 class InMaterialUpdateView(LoginRequiredMixin, UpdateView):
     model = InMaterial
     context_object_name = "inmertial"
@@ -304,7 +310,8 @@ class InMaterialUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(InMaterialUpdateView, self).get_context_data(**kwargs)
-        context['action_url'] = reverse('inmaterial-update', args=[self.object.id])
+        context['action_url'] = reverse(
+            'inmaterial-update', args=[self.object.id])
         context['action_label'] = constants.UPDATE_ACTION
         return context
 
@@ -344,13 +351,16 @@ class OutMatertialCreateView(LoginRequiredMixin, utils.ProcessFormMixin, CreateV
 
     def pre_form_valid(self):
         logger.info("Create OutMaterial page data is valid")
-        messages.add_message(self.request, messages.SUCCESS, "OutMaterial Create Succeed")
+        messages.add_message(
+            self.request, messages.SUCCESS, "OutMaterial Create Succeed")
 
     def pre_form_invalid(self):
-        messages.add_message(self.request, messages.WARNING, "OutMaterial Create Failed")
+        messages.add_message(
+            self.request, messages.WARNING, "OutMaterial Create Failed")
 
     def get_context_data(self, **kwargs):
-        context = super(OutMatertialCreateView, self).get_context_data(**kwargs)
+        context = super(
+            OutMatertialCreateView, self).get_context_data(**kwargs)
         context['action_url'] = reverse('outmaterial-add')
         context['action_label'] = constants.CREATE_ACTION
         return context
@@ -359,14 +369,14 @@ class OutMatertialCreateView(LoginRequiredMixin, utils.ProcessFormMixin, CreateV
         return reverse('outmaterial-index')
 
 
-#TODO 当前该模型的更新视图还未在使用中
+# TODO 当前该模型的更新视图还未在使用中
 class OutMaterialUpdateView(LoginRequiredMixin, utils.ProcessFormMixin, UpdateView):
     model = OutMaterial
     context_object_name = "outmaterial"
     template_name = "material/outmaterial/outmaterial_form.html"
 
     def post(self, request, *args, **kwargs):
-        self.object=self.get_object()
+        self.object = self.get_object()
         return super(OutMaterialUpdateView, self).post(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -387,11 +397,12 @@ def outmaterial_delete(request, pk=None):
     material.count += outmaterial.count
     material.save()
     outmaterial.delete()
-    messages.add_message(request, messages.SUCCESS, u"OutMaterial: %s delete succeed" % material_name)
+    messages.add_message(
+        request, messages.SUCCESS, u"OutMaterial: %s delete succeed" % material_name)
 
     return redirect(reverse("outmaterial-index"))
 
 
-#测试FormView 不指定 form_class 属性值
-#class TestView(FormView):
+# 测试FormView 不指定 form_class 属性值
+# class TestView(FormView):
 #    template_name="material/index.html"
