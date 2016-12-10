@@ -169,7 +169,7 @@ class QuerySetMethodTest(TestCase):
                 )
         self.assertSequenceEqual(
                Material.objects.dates('create_time','month'),
-               [datetime.date(2016,10,1)]
+               [datetime.date.today()]
                 )
 
         self.assertSequenceEqual(
