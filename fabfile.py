@@ -31,6 +31,7 @@ def prepare_deploy():
 
 def deploy():
     code_dir = '~/projects/sys_util'
+
     with cd(code_dir):
         run('git pull') # 运行操作系统中的命令, 需要指定主机进行连接
         run("ls") # 运行操作系统中的命令, 需要指定主机进行连接
