@@ -19,8 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
- 
-#==========================Setting List==================================================================
+
+#==========================Setting List===================================
 
 # 当 DEBUG = False 时， 出现异常通知的用户, 邮件列表
 #------------------------------------------------------------
@@ -34,7 +34,7 @@ APPEND_SLASH = True
 
 # 用来配置 Django 项目所使用的所有缓存系统
 #------------------------------------------------------------
-#CACHES = {
+# CACHES = {
 #        'default':
 #        {
 #            'BACKEND': 'path.to.BACKEND.object', # 缓存后端对象
@@ -44,28 +44,25 @@ APPEND_SLASH = True
 #            'OPTIONS': 'extra.parameters.to.backend', # 传递给缓存后端对象的额外选项参数
 #            'TIMEOUT':'NUMBER of seconds before a cache isconsidered stale', # 缓存失效时间
 #            'VERSION':1 #版本
-#        } 
+#        }
 #
 #    }
 
-#CACHE_MIDDLEWARE_ALIAS=default
-#CACHE_MIDDLEWARE_KEY_PREFIX=''
-#CACHE_MIDDLEWARE_SECONDS=600
+# CACHE_MIDDLEWARE_ALIAS=default
+# CACHE_MIDDLEWARE_KEY_PREFIX=''
+# CACHE_MIDDLEWARE_SECONDS=600
 
 # CSRF 安全访问控制相关设置
 #------------------------------------------------------------
-#CSRF_COOKIE_AGE=31449600
-#CSRF_COOKIE_DOMAIN=None
-#CSRF_COOKIE_HTTPONLY=False # 如果为 True, 则客户端的 JavaScript 代码不能访问 CSRF cookie
-#CSRF_COOKIE_NAME='csrftoken'
-#CSRF_COOKIE_PATH='/'
-#CSRF_COOKIE_SECURE=False
-#CSRF_FAILURE_VIEW='django.views.csrf.csrf_failure'
-#CSRF_HEADER_NAME='HTTP_X_CSRFTOKEN'
-#CSRF_TRUSTED_ORIGINS=[]
-
-
-
+# CSRF_COOKIE_AGE=31449600
+# CSRF_COOKIE_DOMAIN=None
+# CSRF_COOKIE_HTTPONLY=False # 如果为 True, 则客户端的 JavaScript 代码不能访问 CSRF cookie
+# CSRF_COOKIE_NAME='csrftoken'
+# CSRF_COOKIE_PATH='/'
+# CSRF_COOKIE_SECURE=False
+# CSRF_FAILURE_VIEW='django.views.csrf.csrf_failure'
+# CSRF_HEADER_NAME='HTTP_X_CSRFTOKEN'
+# CSRF_TRUSTED_ORIGINS=[]
 
 
 # 项目的日志系统相关配置
@@ -137,7 +134,7 @@ SECRET_KEY = 'e^19jj8r9ut^z)%*mpffve&7boo5d#xx%y4!9s&1!z4n0vdo6o'
 DEBUG = True
 
 # 会抑制 django 视图中的正常异常
-DEBUG_PROPAGATE_EXCEPTIONS=False
+DEBUG_PROPAGATE_EXCEPTIONS = False
 
 # django 服务的 主机/域名 列表
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
@@ -186,7 +183,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
-        'NAME':'django', # 当前定义的模板引擎的别名, 默认为 BACKEND 类所在的模块名， 此处为 'djdango'
+        'NAME':'django',  # 当前定义的模板引擎的别名, 默认为 BACKEND 类所在的模块名， 此处为 'djdango'
         'APP_DIRS': True,
 
         # 为模板引擎类提供的额外选项参数值， 依赖于特定的 BACKEND
@@ -214,76 +211,79 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#        'USER': 'username',
-#        'PASSWORD':'password',
-#        'HOST':'database_host',
-#        'PORT':'access_port_number',
-#        'ATOMIC_REQUESTS':False,
-#        'AUTOCOMMIT':True,
-#        'CONN_MAX_AGE':0,
-#        'OPTIONS':{},
-#        'TIME_ZONE':None,
+        #        'USER': 'username',
+        #        'PASSWORD':'password',
+        #        'HOST':'database_host',
+        #        'PORT':'access_port_number',
+        #        'ATOMIC_REQUESTS':False,
+        #        'AUTOCOMMIT':True,
+        #        'CONN_MAX_AGE':0,
+        #        'OPTIONS':{},
+        #        'TIME_ZONE':None,
 
-# 测试数据库相关的设置
-#        'TEST':{
-#            'USER':None,
-#            'PASSWORD':None,
-#            'CHARSET':None, # 由 postgresql/mysql 支持
-#            'COLLATION':None, # 只由 mysql 使用
-#            'DEPENDENCIES':['default'],
-#            'MIRROR':None,
-#            'NAME':None,
-#            'SERIALIZE':False,
-#            'CREATE_DB':True,# 限于 Oracle 数据库
-#            'CREATE_USER':True,# 限于 Oracle 数据库
-#            'TBLSPACE':None,# 限于 Oracle 数据库
-#            'TBLSPACE_TMP':None,# 限于 Oracle 数据库
-#            'DATAFILE':None,# 限于 Oracle 数据库
-#            'DATAFILE_TMP':None,# 限于 Oracle 数据库
-#            'DATAFILE_MAXSIZE':'500M', # 限于 Oracle 数据库
-#            'DATAFILE_TMP_MAXSIZE':'500M', # 限于 Oracle 数据库
-#            }
+        # 测试数据库相关的设置
+        #        'TEST':{
+        #            'USER':None,
+        #            'PASSWORD':None,
+        #            'CHARSET':None, # 由 postgresql/mysql 支持
+        #            'COLLATION':None, # 只由 mysql 使用
+        #            'DEPENDENCIES':['default'],
+        #            'MIRROR':None,
+        #            'NAME':None,
+        #            'SERIALIZE':False,
+        #            'CREATE_DB':True,# 限于 Oracle 数据库
+        #            'CREATE_USER':True,# 限于 Oracle 数据库
+        #            'TBLSPACE':None,# 限于 Oracle 数据库
+        #            'TBLSPACE_TMP':None,# 限于 Oracle 数据库
+        #            'DATAFILE':None,# 限于 Oracle 数据库
+        #            'DATAFILE_TMP':None,# 限于 Oracle 数据库
+        #            'DATAFILE_MAXSIZE':'500M', # 限于 Oracle 数据库
+        #            'DATAFILE_TMP_MAXSIZE':'500M', # 限于 Oracle 数据库
+        #            }
     }
 }
 
 
 # 系统中任何地方的日期/时间显示格式定义
-DATE_FORMAT='Y/m/d'
+DATE_FORMAT = 'Y/m/d'
 DATE_INPUT_FORMATS = \
-[
-    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
-    '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
-    '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
-    '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
-    '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
-]
+    [
+        # '2006-10-25', '10/25/2006', '10/25/06'
+        '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y',
+        '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
+        '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
+        # 'October 25 2006', 'October 25, 2006'
+        '%B %d %Y', '%B %d, %Y',
+        # '25 October 2006', '25 October, 2006'
+        '%d %B %Y', '%d %B, %Y',
+    ]
 
-DATETIME_FORMAT='Y/m/d H:M:S'
+DATETIME_FORMAT = 'Y/m/d H:M:S'
 DATETIME_INPUT_FORMATS = \
-[
-    '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
-    '%Y-%m-%d %H:%M:%S.%f',  # '2006-10-25 14:30:59.000200'
-    '%Y-%m-%d %H:%M',        # '2006-10-25 14:30'
-    '%Y-%m-%d',              # '2006-10-25'
-    '%m/%d/%Y %H:%M:%S',     # '10/25/2006 14:30:59'
-    '%m/%d/%Y %H:%M:%S.%f',  # '10/25/2006 14:30:59.000200'
-    '%m/%d/%Y %H:%M',        # '10/25/2006 14:30'
-    '%m/%d/%Y',              # '10/25/2006'
-    '%m/%d/%y %H:%M:%S',     # '10/25/06 14:30:59'
-    '%m/%d/%y %H:%M:%S.%f',  # '10/25/06 14:30:59.000200'
-    '%m/%d/%y %H:%M',        # '10/25/06 14:30'
-    '%m/%d/%y',              # '10/25/06'
-]
-TIME_FORAMT='H:M:S'
+    [
+        '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
+        '%Y-%m-%d %H:%M:%S.%f',  # '2006-10-25 14:30:59.000200'
+        '%Y-%m-%d %H:%M',        # '2006-10-25 14:30'
+        '%Y-%m-%d',              # '2006-10-25'
+        '%m/%d/%Y %H:%M:%S',     # '10/25/2006 14:30:59'
+        '%m/%d/%Y %H:%M:%S.%f',  # '10/25/2006 14:30:59.000200'
+        '%m/%d/%Y %H:%M',        # '10/25/2006 14:30'
+        '%m/%d/%Y',              # '10/25/2006'
+        '%m/%d/%y %H:%M:%S',     # '10/25/06 14:30:59'
+        '%m/%d/%y %H:%M:%S.%f',  # '10/25/06 14:30:59.000200'
+        '%m/%d/%y %H:%M',        # '10/25/06 14:30'
+        '%m/%d/%y',              # '10/25/06'
+    ]
+TIME_FORAMT = 'H:M:S'
 TIME_INPUT_FORMATS = \
-[
-    '%H:%M:%S',     # '14:30:59'
-    '%H:%M:%S.%f',  # '14:30:59.000200'
-    '%H:%M',        # '14:30'
-]
+    [
+        '%H:%M:%S',     # '14:30:59'
+        '%H:%M:%S.%f',  # '14:30:59.000200'
+        '%H:%M',        # '14:30'
+    ]
 # 模板中日期/时间显示的格式
-SHORT_DATE_FORMAT='Y/m/d' 
-SHORT_DATETIME_FORMAT='Y/m/d H:M:S'
+SHORT_DATE_FORMAT = 'Y/m/d'
+SHORT_DATETIME_FORMAT = 'Y/m/d H:M:S'
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
@@ -309,7 +309,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC' # 参考 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 可以使用的时间区域值列表
+# 参考 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 可以使用的时间区域值列表
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
