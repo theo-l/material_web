@@ -9,4 +9,4 @@ def host_type():
 def prepare_deploy():
     local("./manage.py test ")
     local("git add -p && git commit -m 'fabric deploy commit'")
-    local("git push")
+    local("git push origin  master")
