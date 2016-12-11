@@ -67,6 +67,9 @@ from fabric.contrib.console import confirm
     排除特定的主机列表:
         有时候，排除特定的一个或多个主机是非常有用的， 如重载几个差的或不想要的主机。
         在 1.4 中，可能会想要使用 skip_bad_hosts 选项替代。
+        
+        $> fab -R role_name -x/--eclude_hosts exclude_host_list
+        $> fab taskname:roles=role_name,eclu
 '''
 MOTO_HOST = 'admin@192.168.0.11:50490'
 THEO_HOST = 'theo@192.168.0.190:22'
