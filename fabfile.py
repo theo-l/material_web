@@ -1,6 +1,6 @@
 # encoding: utf-8
 from __future__ import with_statement
-from fabric.api import local, settings, abort, run, cd, env, hosts
+from fabric.api import local, settings, abort, run, cd, env, hosts, execute, roles
 from fabric.contrib.console import confirm
 
 
@@ -68,8 +68,16 @@ from fabric.contrib.console import confirm
         有时候，排除特定的一个或多个主机是非常有用的， 如重载几个差的或不想要的主机。
         在 1.4 中，可能会想要使用 skip_bad_hosts 选项替代。
         
-        $> fab -R role_name -x/--eclude_hosts exclude_host_list
-        $> fab taskname:roles=role_name,eclu
+        $> fab -R role_name -x/--exclude_hosts exclude_host_list
+        $> fab taskname:roles=role_name,exclude_hosts="host1,host2,..."
+        
+    结合排除的主机列表:
+        排除的主机列表不会将不同层级的主机列表合并起来。 如全局的 -x 选项不会影响一个由装饰器或关键字参数设置的
+        任务特定的主机列表, 同时 单任务的 exclude_hosts 关键字参数也不会影响由全局 -H 指定的主机参数。
+        
+        但是有一个特例，命令行关键字参数(task_name:exclude_hosts=x,y)会考虑通过 @hosts/@roles 设置的主机列表。
+        会考虑两者之间的差集 
+        
 '''
 MOTO_HOST = 'admin@192.168.0.11:50490'
 THEO_HOST = 'theo@192.168.0.190:22'
@@ -157,6 +165,10 @@ def deploy():
     with cd(code_dir):
         run('git pull')  # 运行操作系统中的命令, 需要指定主机进行连接
         run("ls")  # 运行操作系统中的命令, 需要指定主机进行连接
+        
+@roles
+def migrate():
+    print("migrate database on db hosts")
 
 if __name__ == '__main__':
     test_env_obj()
