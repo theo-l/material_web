@@ -48,7 +48,10 @@ def login(request):
     # 登录视图
 
     # 未登录时 为匿名用户对象
-    user = request.user
+    if hasattr(request, 'user'):
+        user = request.user
+    else:
+        user = None
 
     if request.method == 'POST':
 
@@ -158,7 +161,7 @@ def material_add(request):
             if material.id is not None:
                 messages.add_message(
                     request, messages.INFO, "Material create success")
-                return redirect(reverse('material-', args=[material.id]))
+                return redirect(reverse('material-add', args=[material.id]))
 
             else:
                 messages.add_message(

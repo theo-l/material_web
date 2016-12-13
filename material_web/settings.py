@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from django.conf.global_settings import MIDDLEWARE_CLASSES
+import environ
+root = environ.Path(__file__)
+env = environ.Env(DEBUG=(bool, False),)
+env.read_env()
+SITE_ROOT = root()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -154,15 +160,16 @@ INSTALLED_APPS = [
     # 应用消息框架应用
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    #RESTful api app
+
+    # RESTful api app
     'tastypie',
-    
+
     'material',
+    'tastypie_test',
 ]
 
 # 项目的中间件定义
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
 
     # 管理跨请求会话
