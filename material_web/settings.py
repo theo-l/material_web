@@ -154,6 +154,10 @@ INSTALLED_APPS = [
     # 应用消息框架应用
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #RESTful api app
+    'tastypie',
+    
     'material',
 ]
 
