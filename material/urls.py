@@ -1,11 +1,19 @@
 #!/usr/bin/python
 # encoding:utf-8
 
-from django.conf.urls import url
+from django.conf.urls import url, include
+from tastypie.api import Api
 
 from material import views
+from material.api.resources import MaterialResource
+
+
+v1_api = Api(api_name='v1')
+v1_api.register(MaterialResource)
 
 urlpatterns = [
+    
+    url(r'^api/', include(v1_api.urls)),
 
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
