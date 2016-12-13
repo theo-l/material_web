@@ -22,7 +22,7 @@ from material.views import index, login, password_reset
 
 from tastypie.api import Api
 from material.api.resources import MaterialResource
-from tastypie_test.api.resources import EntryResource, UserResource
+from tastypie_test.api.resources import EntryResource, UserResource, MessageResource
 
 # 定义一个Api对象来创建RESTful访问接口
 v1_api = Api(api_name='v1') # api_name 用来定义访问URL中的名称
@@ -30,6 +30,7 @@ v1_api = Api(api_name='v1') # api_name 用来定义访问URL中的名称
 v1_api.register(MaterialResource())
 v1_api.register(EntryResource())
 v1_api.register(UserResource())
+v1_api.register(MessageResource())
 
 #from django.contrib.auth import views as auth_views
 
