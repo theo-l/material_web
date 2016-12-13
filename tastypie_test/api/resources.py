@@ -30,7 +30,8 @@ class UserResource(ModelResource):
 
 class EntryResource(ModelResource):
 
-    user = fields.ForeignKey(UserResource, 'user', full=True) # full=True 用来显示 User 的全部字段
+    # full=True 用来显示 User 的全部字段
+    user = fields.ForeignKey(UserResource, 'user', full=True)
 
     class Meta:
         queryset = Entry.objects.all()
@@ -43,23 +44,24 @@ class EntryResource(ModelResource):
         # fields = ['title', 'pub_date', 'body']  # 限定资源访问时的字段
         # excludes=[...] # 去掉字段列表在资源访问时访问
 
-        #------------------------------------------------------------ 
+#------------------------------------------------------------
         # get: 用来查询资源
         # post: 用来创建资源
         # put: 用来更新一个已经存在的资源或者更新整个资源集合数据
         # patch: 用来更新资源的部分信息
         # delete: 用来删除资源数据
-        allowed_methods = ['get','post','put','patch','delete']  # 限定允许资源访问的方法, 用于限定资源访问可用的方法
-        #------------------------------------------------------------ 
+        # 限定允许资源访问的方法, 用于限定资源访问可用的方法
+        allowed_methods = ['get', 'post', 'put', 'patch', 'delete']
+#------------------------------------------------------------
+
 
 class RiakObject:
 
-    def __init__(self, initial = None):
+    def __init__(self, initial=None):
         self.__dict__['_data'] = {}
 
         if hasattr(initial, 'items'):
             self.__dict__['_data'] = initial
-
 
     def __getattr__(self, name):
         return self._data.get(name, None)
@@ -70,12 +72,13 @@ class RiakObject:
     def to_dict(self):
         return self._data
 
+
 class MessageResource(Resource):
 
     uuid = fields.CharField(attribute='uuid')
     user_uuid = fields.CharField(attribute='user_uuid')
-    message = fields.CharField(attribute = 'message')
-    created = fields.IntegerField(attribute = 'created')
+    message = fields.CharField(attribute='message')
+    created = fields.IntegerField(attribute='created')
 
     class Meta:
         resource_name = 'riak'
@@ -92,7 +95,7 @@ class MessageResource(Resource):
     #============================================================
     # 以下 9 个方法用来实现任意资源的 RESTful API的实现
     def detail_uri_kwargs(self, bundle_or_obj):
-        kwargs ={}
+        kwargs = {}
 
         if isinstance(bundle_or_obj, Bundle):
             kwargs['pk'] = bundle_or_obj.obj.uuid
@@ -103,7 +106,8 @@ class MessageResource(Resource):
 
     def get_object_list(self, request):
         query = self._client().add('messages')
-        query.map("function(v){var data = JSON.parse(v.values[0].data); return [[v.key,data]]}")
+        query.map(
+            "function(v){var data = JSON.parse(v.values[0].data); return [[v.key,data]]}")
         results = []
 
         for result in query.run():
@@ -125,7 +129,7 @@ class MessageResource(Resource):
         bundle.obj = RiakObject(initial=kwargs)
         bundle = self.full_hydrate(bundle)
         bucket = self._bucket()
-        new_message = bucket.new(bundle.obj.uuid, data = bundle.obj.to_dict())
+        new_message = bucket.new(bundle.obj.uuid, data=bundle.obj.to_dict())
         new_message.store()
         return bundle
 
