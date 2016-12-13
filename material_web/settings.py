@@ -336,3 +336,24 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
+
+
+
+############################################################
+# tastypie RESTful api settings
+############################################################
+
+
+API_LIMIT_PER_PAGE = 25 # 设置 api 每页访问资源的数
+
+TASTYPIE_FULL_DEBUG = True
+
+TASTYPIE_CANNED_ERROR = "Opps, we broke it!"
+
+TASTYPIE_ALLOW_MISSING_SLASH = True
+
+TASTYPIE_DATETIME_FORMATTING = 'iso-8601' # 设置全球日期时间格式，可用值:[iso-8601, iso-8601-strict, rfc-2822]
+
+TASTYPIE_DEFAULT_FORMATS =['json','xml','yaml', 'plist'] # 设置网站的序列化格式列表
+# 该设置使得 ApiKey 模型成为一个抽象基类， 在多数据库设置(大哥数据库每个都具有他们自己的用户数据表而且ApiKeyAuthentication没有使用)中很有用。
+TASTYPIE_ABSTRACT_APIKEY = False 
