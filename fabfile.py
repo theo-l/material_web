@@ -2,6 +2,10 @@
 from __future__ import with_statement
 from fabric.api import local, settings, abort, run, cd, env, hosts, execute, roles
 from fabric.contrib.console import confirm
+from fabric.contrib import django
+django.project('material_web')
+from  material.models import Material
+
 
 
 # 定义主机 Hosts
@@ -170,6 +174,13 @@ def deploy():
 @roles
 def migrate():
     print("migrate database on db hosts")
+
+
+@hosts(DEV_HOST )
+def print_instance():
+    for instance in Material.objects.all():
+        print(instance)
+
 
 
 if __name__ == '__main__':
