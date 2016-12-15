@@ -2,9 +2,9 @@
 from __future__ import with_statement
 from fabric.api import local, settings, abort, run, cd, env, hosts, execute, roles
 from fabric.contrib.console import confirm
-from fabric.contrib import django
-django.project('material_web')
-from  material.models import Material
+#from fabric.contrib import django
+#django.settings_module('material_web.settings')
+#from  material.models import Material
 
 
 
@@ -176,10 +176,10 @@ def migrate():
     print("migrate database on db hosts")
 
 
-@hosts(DEV_HOST )
-def print_instance():
-    for instance in Material.objects.all():
-        print(instance)
+#@hosts(DEV_HOST )
+#def print_instance():
+#    for instance in Material.objects.all():
+#        print(instance)
 
 
 
