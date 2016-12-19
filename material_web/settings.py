@@ -164,7 +164,8 @@ INSTALLED_APPS = [
     # RESTful api app
     'tastypie',
 
-    'material',
+    'material.apps.MaterialConfig',
+#    'material',
     'tastypie_test',
 ]
 
