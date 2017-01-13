@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//material/admin.py=utf-8
+encoding//material/api/resources.py=utf-8
+encoding//material/urls.py=utf-8
+encoding//material/utils.py=utf-8
+encoding//material/views.py=utf-8
+encoding//material_web/settings.py=utf-8
+encoding//material_web/urls.py=utf-8
+encoding//tastypie_test/api/resources.py=utf-8
+encoding//tastypie_test/models.py=utf-8
+encoding/fabfile.py=utf-8

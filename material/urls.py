@@ -1,11 +1,13 @@
 #!/usr/bin/python
 # encoding:utf-8
 
-from django.conf.urls import url
-
+from django.conf.urls import url, include
 from material import views
 
+
+
 urlpatterns = [
+    
 
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
