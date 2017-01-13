@@ -140,7 +140,7 @@ DEBUG = True
 DEBUG_PROPAGATE_EXCEPTIONS=False
 
 # django 服务的 主机/域名 列表
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.186']
 
 
 # 项目中安装的应用定义
